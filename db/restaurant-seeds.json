@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Mr Beans Lair",
+        "description": "It is a restaurant with beans as food",
+        "address":{
+            "street": "1234 Street",
+            "city": "Happy Town",
+            "state": "FL",
+            "zip": "123456"
+        }
+        
+
+    },
+    {
+        "name": "Mr Tacos",
+        "description": "It is a restaurant with tacos as food",
+        "address":{
+            "street": "4321 Street",
+            "city": "Sad Town",
+            "state": "WA",
+            "zip": "654321"
+        }
+        
+
+    }
+]
