@@ -11,7 +11,17 @@ router.get('/', (req, res, next) => {
 
 
 router.post('/', (req, res, next) => {
-    Restaurant.Create(req.body)
+    const restaurant = {
+        name: req.body.restaurant,
+        address: {
+            street: req.body.street,
+            city: req.body.city,
+            state: req.body.state,
+            zip: req.body.zip
+        }
+    }
+    console.log(restaurant)
+    Restaurant.create(restaurant)
         .then(restaurant => {
             res.json(restaurant)
         })

@@ -2,9 +2,11 @@
 const express = require('express');
 const app = express();
 const Restaurant = require('./models/restaurant')
+const cors = require('cors')
 
 //Configurations
 app.use(express.json());
+app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 
 //Controllers
