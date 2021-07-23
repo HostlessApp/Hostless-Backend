@@ -20,6 +20,12 @@ router.post('/', (req, res, next) => {
         },
         admin: req.body.admin
     }
+    console.log(newUser);
+    User.create(newUser)
+        .then(user => {
+            res.json(user)
+        })
+        .catch(console.error)
 })
 
 module.exports = router;
