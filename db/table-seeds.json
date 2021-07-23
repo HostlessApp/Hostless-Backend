@@ -1,18 +1,18 @@
 [
     {
-        "identifer": "1",
+        "identifier": "1",
         "seats": 1
     },
     {
-        "identifer": "2",
+        "identifier": "2",
         "seats": 2
     },
     {
-        "identifer": "3",
+        "identifier": "3",
         "seats": 4
     },
     {
-        "identifer": "4",
+        "identifier": "4",
         "seats": 6
     }
 ]
