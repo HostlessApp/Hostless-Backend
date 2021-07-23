@@ -1,0 +1,30 @@
+[
+    {
+        "name":{
+            "first": "John",
+            "last": "Smith"
+        },
+        "admin": "false"
+    },
+    {
+        "name":{
+            "first": "Jane",
+            "last": "Smith"
+        },
+        "admin": "false"
+    },
+    {
+        "name":{
+            "first": "John",
+            "last": "Doe"
+        },
+        "admin": "true"
+    },
+    {
+        "name":{
+            "first": "Jane",
+            "last": "Doe"
+        },
+        "admin": "false"
+    }
+]
