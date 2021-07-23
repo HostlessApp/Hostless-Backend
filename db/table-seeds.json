@@ -1,5 +1,6 @@
 [
     {
+<<<<<<< HEAD
         "number": 1,
         "seats": 1
     },
@@ -13,6 +14,21 @@
     },
     {
         "number": 4,
+=======
+        "identifier": "1",
+        "seats": 1
+    },
+    {
+        "identifier": "2",
+        "seats": 2
+    },
+    {
+        "identifier": "3",
+        "seats": 4
+    },
+    {
+        "identifier": "4",
+>>>>>>> 81d358e (updated spelling bug for seed data)
         "seats": 6
     }
 ]
