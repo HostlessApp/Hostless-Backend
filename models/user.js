@@ -1,6 +1,6 @@
 const mongoose = require('../db/connection')
 
-const User = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     name: {
         first: {
             type: String, 
@@ -15,7 +15,7 @@ const User = new mongoose.Schema({
         type: Boolean
     },
     restaurant: {
-        type: mongoose.Schema.Typrs.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'restaurant'
     },
     reservations: [
