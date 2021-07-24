@@ -2,8 +2,8 @@ const mongoose = require('../db/connection');
 
 const TableSchema = new mongoose.Schema(
     {
-        identifier: {
-            type: String,
+        number: {
+            type: Number,
             required: true,
         },
         seats: {
@@ -14,7 +14,5 @@ const TableSchema = new mongoose.Schema(
     {timestamps: true}
 );
 
-const Table = mongoose.model('Table', TableSchema);
-
-module.exports = Table;
+module.exports = mongoose.model('Table', TableSchema);
 
