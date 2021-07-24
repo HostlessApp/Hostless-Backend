@@ -28,7 +28,8 @@ const reservationSlotSchema = new mongoose.Schema(
     {timestamps: true}
 );
 
-const ReservationSlot = mongoose.model('ReservationSlot', reservationSlotSchema);
+// const ReservationSlot = mongoose.model('ReservationSlot', reservationSlotSchema);
 
-module.exports = ReservationSlot;
+// module.exports = ReservationSlot;
 
+module.exports = mongoose.model('ReservationSlot', reservationSlotSchema);
