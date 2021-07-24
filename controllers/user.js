@@ -28,4 +28,19 @@ router.post('/', (req, res, next) => {
         .catch(console.error)
 })
 
+//edit
+
+router.get('/edit/:id', (req, res, next) => {
+    User.findById(req.params.id)
+        .then(user => {
+            res.json(user)
+        })
+})
+
+router.put('/edit/:id', (req, res, next) => {
+    User.findOneAndUpdate({_id: req.params.id}, req.body, {new:true})
+        .then(user => res.json(user))
+        .catch(console.error)
+})
+
 module.exports = router;
