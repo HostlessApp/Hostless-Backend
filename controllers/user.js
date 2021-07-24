@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
         .then (user => res.json(user))
 })
 
-//create
+//Create
 
 router.post('/', (req, res, next) => {
     const newUser = {
@@ -28,7 +28,7 @@ router.post('/', (req, res, next) => {
         .catch(console.error)
 })
 
-//edit
+//Edit
 
 router.get('/edit/:id', (req, res, next) => {
     User.findById(req.params.id)
@@ -37,10 +37,19 @@ router.get('/edit/:id', (req, res, next) => {
         })
 })
 
+//Update
+
 router.put('/edit/:id', (req, res, next) => {
     User.findOneAndUpdate({_id: req.params.id}, req.body, {new:true})
         .then(user => res.json(user))
         .catch(console.error)
+})
+
+//Delete
+
+router.delete('/edit/:id', (req, res, next) => {
+    User.findOneAndDelete({_id: req.params.id})
+        .then(res.redirect('/users'))
 })
 
 module.exports = router;
