@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
         .then (user => res.json(user))
 })
 
-//create
+//Create
 
 router.post('/', (req, res, next) => {
     const newUser = {
@@ -18,14 +18,47 @@ router.post('/', (req, res, next) => {
             first: req.body.firstName,
             last: req.body.lastName
         },
-        admin: req.body.admin
+        admin: req.body.admin,
+        username: req.body.username
     }
-    console.log(newUser);
+    // console.log(newUser);
+    console.log(req)
     User.create(newUser)
         .then(user => {
             res.json(user)
         })
         .catch(console.error)
+})
+
+//Edit
+
+router.get('/edit/:username', (req, res, next) => {
+    User.find({username: req.params.username})
+        .then(user => {
+            console.log(req.params._id)
+            res.json(user)
+        })
+})
+
+//Update
+
+router.put('/edit/:username', (req, res, next) => {
+    console.log(req.params.username)
+    User.findOneAndUpdate({username: req.params.username}, {$set: {
+        name: req.body.name,
+        admin: req.body.admin
+    }}, {new:true})
+        .then(user => {
+            console.log(user)
+            res.send(user)})
+        .catch(console.error)
+})
+
+//Delete
+
+router.delete('/edit/:username', (req, res, next) => {
+    User.findOneAndDelete({username: req.params.username})
+        .then(res.redirect('/users'))
 })
 
 module.exports = router;

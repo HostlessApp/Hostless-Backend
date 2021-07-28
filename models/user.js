@@ -14,6 +14,11 @@ const UserSchema = new mongoose.Schema({
     admin: {
         type: Boolean
     },
+    username: {
+        type: String, 
+        unique: true,
+        required: true
+    },
     restaurant: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'restaurant'

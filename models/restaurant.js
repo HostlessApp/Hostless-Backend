@@ -47,6 +47,10 @@ const RestaurantSchema = new mongoose.Schema({
             ref: 'reservation'
         }
     ],
+    internalID: {
+        type: Number, 
+        required: true
+    }
 
 })
 
