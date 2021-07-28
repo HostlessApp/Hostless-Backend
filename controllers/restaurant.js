@@ -9,23 +9,31 @@ router.get('/', (req, res, next) => {
     .then(restaurant => res.json(restaurant))
 })
 
+router.get('/:id', (req, res, next) => {
+    Restaurant.find({internalID: req.params.id })
+    .then(restaurant => res.json(restaurant))
+})
+
 
 router.post('/', (req, res, next) => {
-    const restaurant = {
-        name: req.body.restaurant,
-        address: {
-            street: req.body.street,
-            city: req.body.city,
-            state: req.body.state,
-            zip: req.body.zip
-        }
-    }
-    console.log(restaurant)
-    Restaurant.create(restaurant)
-        .then(restaurant => {
-            res.json(restaurant)
+    Restaurant.find({}, {"_id": 1})
+        .then(count => {
+            const restaurant = {
+                name: req.body.restaurant,
+                address: {
+                    street: req.body.street,
+                    city: req.body.city,
+                    state: req.body.state,
+                    zip: req.body.zip
+                },
+                internalID: count.length+1}
+                console.log(restaurant)
+                Restaurant.create(restaurant)
+                    .then(restaurant => {
+                        res.json(restaurant)
+                    })
+                    .catch(console.error)
         })
-        .catch(console.error)
 })
 
 
