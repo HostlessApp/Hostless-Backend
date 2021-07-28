@@ -11,25 +11,6 @@ router.get('restaurant/:restaurant', (req, res, next) => {
 })
 
 
-router.post('/', (req, res, next) => {
-    const restaurant = {
-        name: req.body.restaurant,
-        address: {
-            street: req.body.street,
-            city: req.body.city,
-            state: req.body.state,
-            zip: req.body.zip
-        }
-    }
-    console.log(restaurant)
-    Restaurant.create(restaurant)
-    .then(restaurant => {
-        res.json(restaurant)
-    })
-    .catch(console.error)
-})
-
-
 //create
 router.post('/restaurant/:restaurant', (req, res) => {
     Table.create({
@@ -59,7 +40,7 @@ router.put('/:table', (req, res, next) => {
 })
 
 //destroy
-router.delete('/:table', (req, res, next) => {
+router.delete('/:tableNumber/restaurant/:restaurant', (req, res, next) => {
     Table.findOneAndDelete({_id: req.params.table})
     .then(console.log("table deleted"))
     .catch(next)
