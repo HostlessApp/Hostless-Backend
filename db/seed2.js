@@ -59,3 +59,7 @@ Table.deleteMany({})
         .catch(console.error)
     })
     .catch(console.error)
+
+    // .finally(() => {
+    //     process.exit()
+    // })
