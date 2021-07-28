@@ -7,7 +7,8 @@
             "city": "Happy Town",
             "state": "FL",
             "zip": "123456"
-        }
+        }, 
+        "internalID": 1
         
 
     },
@@ -19,7 +20,8 @@
             "city": "Sad Town",
             "state": "WA",
             "zip": "654321"
-        }
+        }, 
+        "internalID": 2
         
 
     }
