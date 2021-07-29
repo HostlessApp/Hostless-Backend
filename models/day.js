@@ -6,11 +6,11 @@ const DaySchema = new mongoose.Schema({
         required: true
     },
     openTime: {
-        type: Date,
+        type: Number,
         required: true
     },
     closeTime: {
-        type: Date,
+        type: Number,
         required: true
     },
     reservationSlots: {
