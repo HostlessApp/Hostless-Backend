@@ -1,0 +1,37 @@
+[
+    {
+        "dayOfWeek": "Monday",
+        "openTime": 9, 
+        "closeTime": 17
+    },
+    {
+        "dayOfWeek": "Tuesday",
+        "openTime": 9, 
+        "closeTime": 17
+    },
+    {
+        "dayOfWeek": "Wednesday",
+        "openTime": 9, 
+        "closeTime": 17
+    },
+    {
+        "dayOfWeek": "Thursday",
+        "openTime": 9, 
+        "closeTime": 17
+    },
+    {
+        "dayOfWeek": "Friday",
+        "openTime": 9, 
+        "closeTime": 17
+    },
+    {
+        "dayOfWeek": "Saturday",
+        "openTime": 9, 
+        "closeTime": 17
+    },
+    {
+        "dayOfWeek": "Sunday",
+        "openTime": 9, 
+        "closeTime": 17
+    }
+]
