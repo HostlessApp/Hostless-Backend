@@ -50,4 +50,14 @@ router.post('/', (req, res, next) => {
 
 //destroy
 
+
+///////Day Model////////
+
+//index
+router.get('/:id/:day', (req, res, next) => {
+    Restaurant.findOne({internalID: req.params.id })
+    .populate('daysOpen')
+    .then(restaurant =>console.log(restaurant))
+})
+
 module.exports = router;
