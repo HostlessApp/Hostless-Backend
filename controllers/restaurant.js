@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Restaurant = require('../models/restaurant') 
+const Day = require('../models/day')
 
 //index
 router.get('/', (req, res, next) => {
@@ -11,6 +12,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
     Restaurant.find({internalID: req.params.id })
+    .populate('daysOpen')
     .then(restaurant => res.json(restaurant))
 })
 
@@ -49,5 +51,19 @@ router.post('/', (req, res, next) => {
 //update
 
 //destroy
+router.delete('/:id', (req, res, next) => {
+    Restaurant.findByIdAndDelete(req.params.id)
+        .then(res.redirect('/restaurants'))
+
+})
+
+///////Day Model////////
+
+//index
+router.get('/:id/:day', (req, res, next) => {
+    Restaurant.findOne({internalID: req.params.id })
+    .populate('daysOpen')
+    .then(restaurant =>console.log(restaurant))
+})
 
 module.exports = router;
