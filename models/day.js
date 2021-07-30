@@ -13,10 +13,10 @@ const DaySchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    reservationSlots: {
+    reservationSlots: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'reservationSlot'
-    }
+    }]
 })
 
 module.exports = mongoose.model('Day', DaySchema )
