@@ -25,7 +25,7 @@ const reservationSlotSchema = new mongoose.Schema(
             ref: 'Table'
         }, 
         isReserved: {
-            type: Boolean, 
+            type: Boolean,
             required: true
         }
     },
