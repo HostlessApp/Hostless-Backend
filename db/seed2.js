@@ -11,6 +11,7 @@ const userSeedData = require('./user-seeds.json')
 const daySeedData = require('./day-seeds.json')
 
 let IDs = [];
+
 // console.log(ReservationSlot);
 // ReservationSlot.deleteMany({})
 //seedData.forEach(item => console.log(item))
@@ -33,6 +34,39 @@ Table.deleteMany({})
                 .then(()=>{
                     console.log('deleted days')
                 })
+                .then(() => {
+                    // seed nested Restaurant -> (Tables, Days -> ReservationSlots) data
+                    //loop through each of the restaurante
+                    seedData.forEach(restaurant => {
+                        //create tables for each restaurant by seeding the table data each time
+                        Table.insertMany(tableSeedData)
+                        .then(tables => {
+                            //pass the created table and add them to the new restaurant object as it is created.
+                            Restaurant.create({...restaurant, tables: tables.map(table => table.id), daysOpen: []})
+                            .then(newRestaurant => {
+                                daySeedData.forEach(day => {
+                                    ReservationSlot.insertMany(reservationSlotSeedData)
+                                    .then(reservations => {
+                                        // console.log(day)
+                                        // console.log(reservations)
+                                        Day.create({...day, reservationSlots: reservations})
+                                        .then(newDay => {
+                                            newRestaurant.daysOpen.push(newDay)
+                                            daysToAdd.push(newDay)
+                                            console.log(newRestaurant.daysOpen)
+                                        })
+                                        .catch(console.error)
+                                    })
+                                    .catch(console.error)
+                                    
+                                })
+                                
+                            })
+                            .catch(console.error)
+                        })
+                        .catch(console.error)
+                    })
+                })
                 .catch(console.error)
             })
             .then(() => {
@@ -46,38 +80,11 @@ Table.deleteMany({})
     })
     .catch(console.error)
 })
-.then(() => {
-    // seed nested Restaurant -> (Tables, Days -> ReservationSlots) data
-    //loop through each of the restaurante
-    seedData.forEach(restaurant => {
-        //create tables for each restaurant by seeding the table data each time
-        Table.insertMany(tableSeedData)
-        .then(tables => {
-            //pass the created table and add them to the new restaurant object as it is created.
-            Restaurant.create({...restaurant, tables: tables.map(table => table.id), daysOpen: []})
-            .then(newRestaurant => {
-                daySeedData.forEach(day => {
-                    ReservationSlot.insertMany(reservationSlotSeedData)
-                    .then(reservations => {
-                        // console.log(day)
-                        // console.log(reservations)
-                        Day.create({...day, reservationSlots: reservations})
-                        .then(newDay => {
-                            newRestaurant.daysOpen.push(newDay)
-                            console.log(newDay)
-                        })
-                        .catch(console.error)
-                    })
-                    .catch(console.error)
-                    
-                })
-                
-            })
-            .catch(console.error)
-        })
-        .catch(console.error)
-    })
-    .catch(console.error)
+.finally(() => {
+    setTimeout( () => {
+        console.log("exiting process")
+        process.exit()
+    }, 10000)
 })
 //.finally(() => {
     //     User.insertMany(userSeedData)
