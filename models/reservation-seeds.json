@@ -1,0 +1,29 @@
+[
+    {
+        "day":"Monday",
+        "time": {
+            "hour": 11,
+            "minute": 0,
+            "amOrPm": "AM"
+        }, 
+        "numberGuests": 1
+    },
+    {
+        "day":"Tuesday",
+        "time": {
+            "hour": 12,
+            "minute": 0,
+            "amOrPm": "PM"
+        }, 
+        "numberGuests": 4
+    },
+    {
+        "day":"Sunday",
+        "time": {
+            "hour": 1,
+            "minute": 0,
+            "amOrPm": "PM"
+        }, 
+        "numberGuests": 6
+    }
+]
