@@ -13,6 +13,10 @@ const DaySchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    isOpen: {
+        type: Boolean,
+        required: true
+    },
     reservationSlots: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'reservationSlot'
