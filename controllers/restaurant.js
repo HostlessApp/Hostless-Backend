@@ -5,7 +5,6 @@ const Restaurant = require('../models/restaurant')
 const Day = require('../models/day');
 const Table = require('../models/table')
 const { create } = require('../models/restaurant');
-const Day = require('../models/day')
 const Reservations = require('../models/reservation')
 const ReservationSlot = require('../models/reservationSlot')
 
