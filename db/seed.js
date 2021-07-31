@@ -44,37 +44,36 @@ Table.deleteMany({})
                             //pass the created table and add them to the new restaurant object as it is created.
                             Restaurant.create({...restaurant, tables: tables.map(table => table.id), daysOpen: []})
                             .then(newRestaurant => {
-                                let data = daySeedData.map(d => {
-                                    ReservationSlot.insertMany(reservationSlotSeedData)
-                                    .then(res => {
-                                        return({...d, reservationSlots: res})
-                                    })
-                                    .then("day: " + console.log)
-                                    .catch(console.error)
-                                })
+                                // let data = daySeedData.map(d => {
+                                //     ReservationSlot.insertMany(reservationSlotSeedData)
+                                //     .then(res => {
+                                //         return({...d, reservationSlots: res})
+                                //     })
+                                //     .then("day: " + console.log)
+                                //     .catch(console.error)
+                                // })
                                 // console.log("day:" + data)
-                                let outer = () => {return new Promise( (suc, err) => {
-                                    suc(daySeedData.forEach(day => {
-                                        ReservationSlot.insertMany(reservationSlotSeedData)
-                                        .then(reservations => {
-                                            // console.log(day)
-                                            // console.log(reservations)
-                                            return Day.create({...day, reservationSlots: reservations})
-                                            .then(newDay => {
-                                                // console.log(newDay);
-                                                return newRestaurant.daysOpen.push(newDay._id)
-                                                // daysToAdd.push(newDay)
-                                                console.log(newRestaurant.daysOpen)
-                                            })
+                                daySeedData.forEach(day => {
+                                    ReservationSlot.insertMany(reservationSlotSeedData)
+                                    .then(reservations => {
+                                        // console.log(day)
+                                        // console.log(reservations)
+                                        Day.create({...day, reservationSlots: reservations})
+                                        .then(newDay => {
+                                            // console.log(newDay);
+                                            newRestaurant.daysOpen.push(newDay._id)
+                                            Restaurant.findOneAndUpdate({_id: newRestaurant._id}, {daysOpen: newRestaurant.daysOpen})
                                             .catch(console.error)
+                                            // daysToAdd.push(newDay)
+                                            console.log(newRestaurant.daysOpen)
                                         })
-                                            .catch(console.error)
-                                        })
-                                        )
+                                        .catch(console.error)
                                     })
-                                }
-                                .then (()=> newRestaurant.save())
-                                
+                                    .catch(console.error)
+                                    
+                                })
+                                return newRestaurant
+                            })
                             .then(newRestaurant => console.log("newRes: " + newRestaurant))
                             .catch(console.error)
                         })
