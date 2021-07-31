@@ -44,7 +44,7 @@ const RestaurantSchema = new mongoose.Schema({
     reservations:  [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'reservation'
+            ref: 'Reservation'
         }
     ],
     internalID: {
