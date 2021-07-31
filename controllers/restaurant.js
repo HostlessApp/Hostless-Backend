@@ -18,7 +18,7 @@ router.get('/:id', (req, res, next) => {
     .then(restaurant => res.json(restaurant))
 })
 
-
+//find restaurant and add the internal IDç
 router.post('/', (req, res, next) => {
     Restaurant.find({}, {"_id": 1})
     .then(count => {
