@@ -2,36 +2,43 @@
     {
         "dayOfWeek": "Monday",
         "openTime": 9, 
-        "closeTime": 17
+        "closeTime": 17,
+        "isOpen": true
     },
     {
         "dayOfWeek": "Tuesday",
         "openTime": 9, 
-        "closeTime": 17
+        "closeTime": 17,
+        "isOpen": true
     },
     {
         "dayOfWeek": "Wednesday",
         "openTime": 9, 
-        "closeTime": 17
+        "closeTime": 17,
+        "isOpen": true
     },
     {
         "dayOfWeek": "Thursday",
         "openTime": 9, 
-        "closeTime": 17
+        "closeTime": 17,
+        "isOpen": true
     },
     {
         "dayOfWeek": "Friday",
         "openTime": 9, 
-        "closeTime": 17
+        "closeTime": 17,
+        "isOpen": true
     },
     {
         "dayOfWeek": "Saturday",
         "openTime": 9, 
-        "closeTime": 17
+        "closeTime": 17,
+        "isOpen": true
     },
     {
         "dayOfWeek": "Sunday",
         "openTime": 9, 
-        "closeTime": 17
+        "closeTime": 17,
+        "isOpen": true
     }
 ]
