@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const Restaurant = require('../models/restaurant') 
-const Day = require('../models/day')
+const Day = require('../models/day');
+const Table = require('../models/table')
+const { create } = require('../models/restaurant');
 
 //index
 router.get('/', (req, res, next) => {
@@ -19,25 +21,101 @@ router.get('/:id', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
     Restaurant.find({}, {"_id": 1})
-        .then(count => {
-            const restaurant = {
-                name: req.body.restaurant,
-                address: {
-                    street: req.body.street,
-                    city: req.body.city,
-                    state: req.body.state,
-                    zip: req.body.zip
-                },
-                internalID: count.length+1}
-                console.log(restaurant)
-                Restaurant.create(restaurant)
-                    .then(restaurant => {
-                        res.json(restaurant)
-                    })
-                    .catch(console.error)
-        })
-})
+    .then(count => {
+    async function createTables() {
+        let tables = req.body.tables
+        let data = []
+        for (let i = 0; i < tables.length; i++) {
+            const table = {
+                number: tables[i].tableNumber,
+                seats: tables[i].size
+            }
+            data.push(table)
+        }
+        console.log(data)
+        return data
+    }
 
+    async function createTable(table) {
+        console.log(table)
+        return Table.create(table)
+    }
+
+    async function createTableModels(tables) {
+        console.log('err')
+        let tableData = []
+        for (const table of tables) {
+            const data = await createTable(table);
+            console.log(data, "MEWKNFDASCOMASDM")
+            tableData.push(data._id)
+        }
+        console.log(tableData)
+        return tableData
+    }
+
+    async function createHours() {
+        let hours = req.body.hours
+        let daysOfWeek = [];
+        Object.keys(hours).forEach(day => {
+            const newDay = {
+                dayOfWeek: day,
+                openTime: 1,
+                // openTime: hours[day].open
+                // closeTime: hours[day].close
+                closeTime: 2,
+                isOpen: hours[day].isOpen
+                
+            }
+            daysOfWeek.push(newDay)
+            console.log(daysOfWeek)
+        });
+        return daysOfWeek
+    }
+    async function createDay(day) {
+        return Day.create(day)
+    }
+    async function createDayModels(days) {
+        let daysOfWeek = []
+        for (const day of days) {
+            const data = await createDay(day);
+            daysOfWeek.push(data._id)
+        }
+        return daysOfWeek
+    }
+
+    createHours().then(hours => {
+        createDayModels(hours).then(days => {
+            let newDays = days;
+            createTables().then(tables => {
+                createTableModels(tables).then(tableData => {
+                    let newTables = tableData;
+                    const restaurant = {
+                        name: req.body.about.restaurant,
+                        description: req.body.about.description,
+                        address: {
+                            street: req.body.about.street,
+                            city: req.body.about.city,
+                            state: req.body.about.state,
+                            zip: req.body.about.zip
+                        },
+                        daysOpen: newDays,
+                        tables: newTables,
+                        internalID: count.length+1
+                    }
+                    console.log(restaurant)
+                    Restaurant.create(restaurant)
+                        .then(restaurant => {
+                            console.log(restaurant)
+                            res.json(restaurant)
+                        })
+                        .catch(console.error)
+                })
+            })
+        })
+    })
+    })
+
+})
 
 //new
 
