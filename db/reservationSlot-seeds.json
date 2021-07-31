@@ -4,34 +4,39 @@
             "hour": 9,
             "minute": 0,
             "amOrPm": "AM"
-        }
+        },
+        "isReserved": false
     },
     {
         "time": {
             "hour": 10,
             "minute": 0,
             "amOrPm": "AM"
-        }
+        },
+        "isReserved": false
     },
     {
         "time": {
             "hour": 11,
             "minute": 0,
             "amOrPm": "AM"
-        }
+        },
+        "isReserved": false
     },
     {
         "time": {
             "hour": 12,
             "minute": 0,
             "amOrPm": "PM"
-        }
+        },
+        "isReserved": false
     },
     {
         "time": {
             "hour": 1,
             "minute": 0,
             "amOrPm": "PM"
-        }
+        },
+        "isReserved": false
     }
 ]
