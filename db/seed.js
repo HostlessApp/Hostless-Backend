@@ -44,6 +44,16 @@ Table.deleteMany({})
                             //pass the created table and add them to the new restaurant object as it is created.
                             Restaurant.create({...restaurant, tables: tables.map(table => table.id), daysOpen: []})
                             .then(newRestaurant => {
+                                let data = daySeedData.map(d => {
+                                    return (
+                                        ReservationSlot.insertMany(reservationSlotSeedData)
+                                        .then(res => {
+                                            return({...d, reservationSlots: res})
+                                        })
+                                        .then("day: " + console.log)
+                                    )
+                                })
+                                // console.log("day:" + data)
                                 daySeedData.forEach(day => {
                                     ReservationSlot.insertMany(reservationSlotSeedData)
                                     .then(reservations => {
@@ -51,32 +61,33 @@ Table.deleteMany({})
                                         // console.log(reservations)
                                         Day.create({...day, reservationSlots: reservations})
                                         .then(newDay => {
-                                            newRestaurant.daysOpen.push(newDay)
-                                            daysToAdd.push(newDay)
-                                            console.log(newRestaurant.daysOpen)
+                                            // console.log(newDay);
+                                            newRestaurant.daysOpen.push(newDay._id)
+                                            // daysToAdd.push(newDay)
+                                            // console.log(newRestaurant.daysOpen)
                                         })
                                         .catch(console.error)
                                     })
                                     .catch(console.error)
                                     
                                 })
-                                
+                                return newRestaurant
                             })
+                            .then(newRestaurant => newRestaurant.save())
                             .catch(console.error)
                         })
                         .catch(console.error)
                     })
                 })
-                .catch(console.error)
-            })
-            .then(() => {
-                User.insertMany(userSeedData)
-                .then(console.log)
+                .then(() => {
+                    User.insertMany(userSeedData)
+                    .then(console.log)
+                    .catch(console.error)
+                })
                 .catch(console.error)
             })
             .catch(console.error)
         })
-        .catch(console.error)
     })
     .catch(console.error)
 })
