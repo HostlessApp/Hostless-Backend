@@ -5,6 +5,11 @@ const Restaurant = require('../models/restaurant')
 const Day = require('../models/day');
 const Table = require('../models/table')
 const { create } = require('../models/restaurant');
+const Day = require('../models/day')
+const Reservations = require('../models/reservation')
+const ReservationSlot = require('../models/reservationSlot')
+
+const reservationSlotSeedData = require('../db/reservationSlot-seeds.json')
 
 //index
 router.get('/', (req, res, next) => {
@@ -12,13 +17,37 @@ router.get('/', (req, res, next) => {
     .then(restaurant => res.json(restaurant))
 })
 
+//Edit Route
+router.get('/edit/:internalID', (req, res, next) => {
+    console.log(req.params.internalID)
+    Restaurant.findOne({internalID: {$eq: req.params.internalID}})
+        .then(restaurant => {
+            res.json(restaurant)
+        })
+})
+
+//Update Restaurant
+router.put('/edit/:internalID', (req, res, next) => {
+    console.log(req.params.internalID)
+    Restaurant.findOneAndUpdate({internalID: req.params.internalID}, {$set: {
+        name: req.body.name,
+        address: req.body.address,
+        description: req.body.description
+    }}, {new:true})
+        .then(restaurant => {
+            console.log(restaurant)
+            res.send(restaurant)})
+        .catch(console.error)
+})
+
+
 router.get('/:id', (req, res, next) => {
     Restaurant.find({internalID: req.params.id })
     .populate('daysOpen')
     .then(restaurant => res.json(restaurant))
 })
 
-
+//create restaurant and append internalID
 router.post('/', (req, res, next) => {
     Restaurant.find({}, {"_id": 1})
     .then(count => {
@@ -138,10 +167,98 @@ router.delete('/:id', (req, res, next) => {
 ///////Day Model////////
 
 //index
-router.get('/:id/:day', (req, res, next) => {
-    Restaurant.findOne({internalID: req.params.id })
-    .populate('daysOpen')
-    .then(restaurant =>console.log(restaurant))
+// router.get('/:id/:day', (req, res, next) => {
+//     Restaurant.findOne({internalID: req.params.id })
+//     .populate('daysOpen')
+//     .then(restaurant =>console.log(restaurant))
+// })
+
+//view day
+router.get('/day/:dayID', (req, res) => {
+    Day.findById(req.params.dayID)
+    .populate('ReservationSlot')
+    .then(day => {
+        res.json(day.reservationSlots)
+    })
+    .catch((error)=>{
+        console.log(error)
+        res.send("uh oh, something went wrong")
+    })
 })
+
+// create day
+router.post('/day/create', (req, res) => {
+    ReservationSlot.insertMany(reservationSlotSeedData)
+    .then(slots => {
+        Day.create({
+            dayOfWeek: req.body.dayOfWeek,
+            openTime: req.body.open,
+            closeTime: req.body.close,
+            reservationSlots: slots
+        })
+        .then(day => {
+            Restaurant.find({internalID: req.body.restaurant})
+            .then(restaurant => {
+                restaurant.daysOpen.push(day)
+                restaurant.save();
+            })
+            .catch(console.error)
+        })
+        .catch(console.error)
+    })
+    .catch(console.error)
+})
+
+
+
+
+
+
+
+//Reservation Routes
+
+//index all reservations
+router.get('/reservations/', (req, res, next) => {
+    Reservations.find({})
+        .then(reservations => {
+            console.log(reservations)
+            res.json(reservations)
+        })
+        .catch((err) => console.log(err))
+    })
+
+//index reservations for restaurant admin
+router.get('/reservations/admin/:internalID', (req, res, next) => {
+    Restaurant.findOne({internalID: req.params.internalID})
+    .populate('reservations')
+    .then(restaurant => res.json(restaurant))
+})
+
+//create reservation
+router.post('/reservations/:resID', (req, res, next) => {
+    Reservations.create(req.body)
+        .then((reservation) => {
+            User.findOneAndUpdate({username: req.body.username}, {$push: {reservations: reservation}})
+            Restaurant.findOneAndUpdate({internalID: req.body.internalID}, {$push: {reservations: reservation}})
+            return reservation
+        })
+        .then((reservation) => {
+            ReservationSlot.findByIdAndUpdate(req.body.time, {$set: {isReserved: true}})
+        })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;

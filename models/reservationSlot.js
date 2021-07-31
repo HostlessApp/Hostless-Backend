@@ -23,6 +23,10 @@ const reservationSlotSchema = new mongoose.Schema(
         openTables:{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Table'
+        }, 
+        isReserved: {
+            type: Boolean,
+            required: true
         }
     },
     {timestamps: true}
