@@ -32,13 +32,13 @@
     {
         "dayOfWeek": "Saturday",
         "openTime": 9, 
-        "closeTime": 17,
+        "closeTime": 21,
         "isOpen": true
     },
     {
         "dayOfWeek": "Sunday",
         "openTime": 9, 
-        "closeTime": 17,
+        "closeTime": 21,
         "isOpen": true
     }
 ]
