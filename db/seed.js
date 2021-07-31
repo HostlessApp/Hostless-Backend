@@ -45,35 +45,37 @@ Table.deleteMany({})
                             Restaurant.create({...restaurant, tables: tables.map(table => table.id), daysOpen: []})
                             .then(newRestaurant => {
                                 let data = daySeedData.map(d => {
-                                    return (
-                                        ReservationSlot.insertMany(reservationSlotSeedData)
-                                        .then(res => {
-                                            return({...d, reservationSlots: res})
-                                        })
-                                        .then("day: " + console.log)
-                                    )
+                                    ReservationSlot.insertMany(reservationSlotSeedData)
+                                    .then(res => {
+                                        return({...d, reservationSlots: res})
+                                    })
+                                    .then("day: " + console.log)
+                                    .catch(console.error)
                                 })
                                 // console.log("day:" + data)
-                                daySeedData.forEach(day => {
-                                    ReservationSlot.insertMany(reservationSlotSeedData)
-                                    .then(reservations => {
-                                        // console.log(day)
-                                        // console.log(reservations)
-                                        Day.create({...day, reservationSlots: reservations})
-                                        .then(newDay => {
-                                            // console.log(newDay);
-                                            newRestaurant.daysOpen.push(newDay._id)
-                                            // daysToAdd.push(newDay)
-                                            // console.log(newRestaurant.daysOpen)
+                                let outer = () => {return new Promise( (suc, err) => {
+                                    suc(daySeedData.forEach(day => {
+                                        ReservationSlot.insertMany(reservationSlotSeedData)
+                                        .then(reservations => {
+                                            // console.log(day)
+                                            // console.log(reservations)
+                                            return Day.create({...day, reservationSlots: reservations})
+                                            .then(newDay => {
+                                                // console.log(newDay);
+                                                return newRestaurant.daysOpen.push(newDay._id)
+                                                // daysToAdd.push(newDay)
+                                                console.log(newRestaurant.daysOpen)
+                                            })
+                                            .catch(console.error)
                                         })
-                                        .catch(console.error)
+                                            .catch(console.error)
+                                        })
+                                        )
                                     })
-                                    .catch(console.error)
-                                    
-                                })
-                                return newRestaurant
-                            })
-                            .then(newRestaurant => newRestaurant.save())
+                                }
+                                .then (()=> newRestaurant.save())
+                                
+                            .then(newRestaurant => console.log("newRes: " + newRestaurant))
                             .catch(console.error)
                         })
                         .catch(console.error)
