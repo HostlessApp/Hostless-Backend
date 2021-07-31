@@ -32,7 +32,7 @@ const RestaurantSchema = new mongoose.Schema({
     daysOpen: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Day'
+            ref: 'day'
         }
     ],
     tables:  [
@@ -44,7 +44,7 @@ const RestaurantSchema = new mongoose.Schema({
     reservations:  [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Reservation'
+            ref: 'reservation'
         }
     ],
     internalID: {
