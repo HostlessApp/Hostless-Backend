@@ -174,7 +174,7 @@ router.delete('/:id', (req, res, next) => {
 //view day
 router.get('/day/:dayID', (req, res) => {
     Day.findById(req.params.dayID)
-    .populate('ReservationSlot')
+    .populate('reservationSlots')
     .then(day => {
         res.json(day.reservationSlots)
     })
