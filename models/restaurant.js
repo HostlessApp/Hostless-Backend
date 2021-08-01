@@ -48,7 +48,7 @@ const RestaurantSchema = new mongoose.Schema({
         }
     ],
     internalID: {
-        type: Number, 
+        type: String, 
         required: true
     }
 

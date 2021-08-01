@@ -1,0 +1,50 @@
+[
+    {
+        "day":"Monday",
+        "time": {
+            "hour": 11,
+            "minute": 0
+        }, 
+        "numberGuests": 1
+    },
+    {
+        "day":"Monday",
+        "time": {
+            "hour": 11,
+            "minute": 0
+        }, 
+        "numberGuests": 4
+    },
+    {
+        "day":"Monday",
+        "time": {
+            "hour": 11,
+            "minute": 0
+        }, 
+        "numberGuests": 6
+    },
+    {
+        "day":"Monday",
+        "time": {
+            "hour": 11,
+            "minute": 30
+        }, 
+        "numberGuests": 2
+    },
+    {
+        "day":"Tuesday",
+        "time": {
+            "hour": 12,
+            "minute": 30
+        }, 
+        "numberGuests": 4
+    },
+    {
+        "day":"Sunday",
+        "time": {
+            "hour": 13,
+            "minute": 30
+        }, 
+        "numberGuests": 6
+    }
+]

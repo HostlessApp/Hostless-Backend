@@ -2,21 +2,15 @@ const mongoose = require('../db/connection')
 
 const ReservationSchema = new mongoose.Schema({
     day: {type: String, required: true},
-    time: {
-        hour: {
-            type: Number,
-            required: true,
-        },
-        minute: {
-            type: Number,
-            required: true,
-        },
-        amOrPm: {
-            type: String,
-            required: true
-        }
+    numberGuests: {type: Number},
+    restaurant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Restaurant'
     },
-    numberGuests: {type: Number, required: true},
+    reservationSlot: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ReservationSlot'
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

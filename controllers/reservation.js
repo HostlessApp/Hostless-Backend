@@ -2,6 +2,9 @@ const express =  require('express')
 const router = express.Router()
 
 const Reservation = require('../models/reservation')
+const ReservationSlot = require('../models/reservationSlot')
+const Restaurant = require('../models/restaurant')
+const User = require('../models/user')
 
 // Index
 router.get('/', (req, res, next) => {
@@ -14,8 +17,15 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
+// Index - Admin View
+router.get('/admin/:internalID', (req, res, next) => {
+    Restaurant.findOne({internalID: req.params.internalID})
+    .populate('reservations')
+    .then(restaurant => res.json(restaurant))
+})
+
 // Create
-router.post("/", (req, res, next) => {
+router.post("/", (req, res, next) => { // todo - resID may be necessary?
     Reservation.create({
         day: req.body.day,
         numberGuests: req.body.numberGuests,
@@ -69,6 +79,13 @@ router.delete("/:id", (req, res, next) => {
         Reservation.findByIdAndRemove(req.params.id)
         .then(res.redirect('/reservations'))
     })
+    .catch(next)
+}) */
+
+// Destroy
+router.delete("/:id", (req, res, next) => {
+    Reservation.findByIdAndRemove(req.params.id)
+    // .then(res.redirect('/reservations'))
     .catch(next)
 })
 
