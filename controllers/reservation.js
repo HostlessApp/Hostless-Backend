@@ -27,27 +27,26 @@ router.get('/admin/:internalID', (req, res, next) => {
 // Create
 router.post("/", (req, res, next) => { // todo - resID may be necessary?
     Reservation.create({
-        day: req.body.day,
+        day: req.body.date,
         numberGuests: req.body.numberGuests,
-        restaurant: req.restaurant._id,
-        reservationSlot: req.reservationSlot._id,
-        user: req.user._id,
-        table: req.table._id
+        restaurant: req.restaurant,
+        reservationSlot: req.time,
+        user: req.body.user
     })
     .then(reservation => {
         User.findOneAndUpdate(
-            {username: req.body.username}, 
+            {username: req.body.user}, 
             {$push: {reservations: reservation}}
         )
         Restaurant.findOneAndUpdate(
-            {internalID: req.body.internalID},
+            {internalID: req.body.restaurant},
             {$push: {reservations: reservation}}
         )
         return reservation
     })
     .then(() => {
-        ReservationSlot.findByIdAndUpdate(
-            {reservationSlot: req.reservationSlot._id}, // todo - slot scope
+        ReservationSlot.findOneAndUpdate(
+            {_id: req.body.time}, // todo - slot scope
             {$set: {isReserved: true}} // todo - verify schema properties?
         )
     })
@@ -80,7 +79,7 @@ router.delete("/:id", (req, res, next) => {
         .then(res.redirect('/reservations'))
     })
     .catch(next)
-}) */
+})
 
 // Destroy
 router.delete("/:id", (req, res, next) => {

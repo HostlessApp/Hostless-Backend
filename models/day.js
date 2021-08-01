@@ -19,7 +19,7 @@ const DaySchema = new mongoose.Schema({
     },
     reservationSlots: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'reservationSlot'
+        ref: 'ReservationSlot'
     }]
 })
 
