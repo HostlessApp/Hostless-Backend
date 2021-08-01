@@ -12,8 +12,10 @@ app.use(express.urlencoded({ extended: true }));
 //Controllers
 const restaurantController = require('./controllers/restaurant');
 const userController = require('./controllers/user');
+const reservationController = require('./controllers/reservation');
 app.use('/restaurants', restaurantController);
 app.use('/users', userController);
+app.use('/reservations', reservationController);
 
 //Ports
 const port = process.env.PORT || 3000;
