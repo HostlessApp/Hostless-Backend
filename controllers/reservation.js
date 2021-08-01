@@ -24,48 +24,51 @@ router.post("/", (req, res, next) => {
         user: req.user._id,
         table: req.table._id
     })
-    // .then(reservation => {
-    //     res.redirect('/reservations')
-    // })
-    .catch(next)
-})
-
-// Update
-/* router.get("/edit/:id", (req, res, next) => {
-    Reservation.findById(req.params.id)
-    .populate('user')
-    .populate('table')
     .then(reservation => {
-        console.log('reservation-edit: ', reservation)
-        res.json(reservation)
+        User.findOneAndUpdate(
+            {username: req.body.username}, 
+            {$push: {reservations: reservation}}
+        )
+        Restaurant.findOneAndUpdate(
+            {internalID: req.body.internalID},
+            {$push: {reservations: reservation}}
+        )
+        return reservation
+    })
+    .then(() => {
+        ReservationSlot.findByIdAndUpdate(
+            {reservationSlot: req.reservationSlot._id}, // todo - slot scope
+            {$set: {isReserved: true}} // todo - verify schema properties?
+        )
+    })
+    .then(() => {
+        res.redirect('/reservations')
     })
     .catch(next)
 })
-router.put('/edit/:id', (req, res, next) => { 
-    console.log('reservation-update: ', req.params.id)
-    Reservation.findOneAndUpdate(
-        {_id: req.params.id},
-        {
-            day: req.body.day,
-            time: req.body.time,
-            numberGuests: req.body.numberGuests,
-            user: req.user._id,
-            table: req.table._id
-        },
-        {new: true}
-    )
-    .then(reservation => {
-        console.log('updated-reservation: ', reservation)
-        res.send(reservation)
-        // res.redirect('/reservations')
-    })
-    .catch(next)
-}) */
 
 // Destroy
 router.delete("/:id", (req, res, next) => {
-    Reservation.findByIdAndRemove(req.params.id)
-    // .then(res.redirect('/reservations'))
+    Reservation.findById(req.params.id)
+    .then(reservation => {
+        User.findByIdAndUpdate(
+            {_id: req.user._id}, 
+            {$pull: {reservations: reservation}}
+        )
+        Restaurant.findOneAndUpdate(
+            {internalID: req.body.internalID},
+            {$pull: {reservations: reservation}}
+        )
+        ReservationSlot.findByIdAndUpdate(
+            {reservationSlot: req.reservationSlot._id}, // todo - slot scope
+            {$set: {isReserved: false}} // todo - verify schema properties?
+        )
+        // return reservation
+    })
+    .then(() => {
+        Reservation.findByIdAndRemove(req.params.id)
+        .then(res.redirect('/reservations'))
+    })
     .catch(next)
 })
 
