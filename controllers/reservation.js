@@ -2,6 +2,9 @@ const express =  require('express')
 const router = express.Router()
 
 const Reservation = require('../models/reservation')
+const ReservationSlot = require('../models/reservationSlot')
+const Restaurant = require('../models/restaurant')
+const User = require('../models/user')
 
 // Index
 router.get('/', (req, res, next) => {
@@ -14,8 +17,15 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
+// Index - Admin View
+router.get('/admin/:internalID', (req, res, next) => {
+    Restaurant.findOne({internalID: req.params.internalID})
+    .populate('reservations')
+    .then(restaurant => res.json(restaurant))
+})
+
 // Create
-router.post("/", (req, res, next) => {
+router.post("/", (req, res, next) => { // todo - resID may be necessary?
     Reservation.create({
         day: req.body.day,
         numberGuests: req.body.numberGuests,
@@ -24,9 +34,26 @@ router.post("/", (req, res, next) => {
         user: req.user._id,
         table: req.table._id
     })
-    // .then(reservation => {
-    //     res.redirect('/reservations')
-    // })
+    .then(reservation => {
+        User.findOneAndUpdate(
+            {username: req.body.username}, 
+            {$push: {reservations: reservation}}
+        )
+        Restaurant.findOneAndUpdate(
+            {internalID: req.body.internalID},
+            {$push: {reservations: reservation}}
+        )
+        return reservation
+    })
+    .then(() => {
+        ReservationSlot.findByIdAndUpdate(
+            {reservationSlot: req.reservationSlot._id}, // todo - slot scope
+            {$set: {isReserved: true}} // todo - verify schema properties
+        )
+    })
+    .then(() => {
+        res.redirect('/reservations')
+    })
     .catch(next)
 })
 

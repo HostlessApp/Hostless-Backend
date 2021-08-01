@@ -5,7 +5,6 @@ const Restaurant = require('../models/restaurant')
 const Day = require('../models/day');
 const Table = require('../models/table')
 const { create } = require('../models/restaurant');
-const Reservations = require('../models/reservation')
 const ReservationSlot = require('../models/reservationSlot')
 
 const reservationSlotSeedData = require('../db/reservationSlot-seeds.json')
@@ -207,57 +206,5 @@ router.post('/day/create', (req, res) => {
     })
     .catch(console.error)
 })
-
-
-
-
-
-
-
-//Reservation Routes
-
-//index all reservations
-router.get('/reservations/', (req, res, next) => {
-    Reservations.find({})
-        .then(reservations => {
-            console.log(reservations)
-            res.json(reservations)
-        })
-        .catch((err) => console.log(err))
-    })
-
-//index reservations for restaurant admin
-router.get('/reservations/admin/:internalID', (req, res, next) => {
-    Restaurant.findOne({internalID: req.params.internalID})
-    .populate('reservations')
-    .then(restaurant => res.json(restaurant))
-})
-
-//create reservation
-router.post('/reservations/:resID', (req, res, next) => {
-    Reservations.create(req.body)
-        .then((reservation) => {
-            User.findOneAndUpdate({username: req.body.username}, {$push: {reservations: reservation}})
-            Restaurant.findOneAndUpdate({internalID: req.body.internalID}, {$push: {reservations: reservation}})
-            return reservation
-        })
-        .then((reservation) => {
-            ReservationSlot.findByIdAndUpdate(req.body.time, {$set: {isReserved: true}})
-        })
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;
