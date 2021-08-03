@@ -1,7 +1,7 @@
 const mongoose = require('../db/connection')
 
 const ReservationSchema = new mongoose.Schema({
-    day: {type: String, required: true},
+    day: {type: String},
     numberGuests: {type: Number},
     restaurant: {
         type: mongoose.Schema.Types.ObjectId,
@@ -14,10 +14,6 @@ const ReservationSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    },
-    table: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Table'
     }
 }, {timestamps: true})
 
