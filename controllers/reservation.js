@@ -26,32 +26,37 @@ router.get('/admin/:internalID', (req, res, next) => {
 
 // Create
 router.post("/", (req, res, next) => { // todo - resID may be necessary?
-    Reservation.create({
-        day: req.body.date,
-        numberGuests: req.body.numberGuests,
-        restaurant: req.restaurant,
-        reservationSlot: req.time,
-        user: req.body.user
-    })
-    .then(reservation => {
-        User.findOneAndUpdate(
-            {username: req.body.user}, 
-            {$push: {reservations: reservation}}
-        )
-        Restaurant.findOneAndUpdate(
-            {internalID: req.body.restaurant},
-            {$push: {reservations: reservation}}
-        )
-        return reservation
-    })
-    .then(() => {
-        ReservationSlot.findOneAndUpdate(
-            {_id: req.body.time}, // todo - slot scope
-            {$set: {isReserved: true}} // todo - verify schema properties?
-        )
-    })
-    .then(() => {
-        res.redirect('/reservations')
+    console.log('reqest log')
+    console.log('req - looking for user::',req.body)
+    User.findOne({username: req.body.user})
+    .then(user => {
+        Reservation.create({
+            day: req.body.date,
+            restaurant: req.body.restaurant,
+            reservationSlot: req.body.time,
+            user: user
+            // user: req.user._id
+        })
+        .then(reservation => {
+            User.findOneAndUpdate(
+                {username: req.body.user}, 
+                {$push: {reservations: reservation}}
+            )
+            Restaurant.findOneAndUpdate(
+                {internalID: req.body.restaurant},
+                {$push: {reservations: reservation}}
+            )
+            return reservation
+        })
+        .then(() => {
+            ReservationSlot.findOneAndUpdate(
+                {_id: req.body.time}, // todo - slot scope
+                {$set: {isReserved: true}} // todo - verify schema properties?
+            )
+        })
+        .then(() => {
+            res.redirect('/reservations')
+        })
     })
     .catch(next)
 })
