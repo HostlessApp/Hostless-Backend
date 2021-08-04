@@ -20,7 +20,14 @@ router.get('/', (req, res, next) => {
 // Index - Admin View
 router.get('/admin/:internalID', (req, res, next) => {
     Restaurant.findOne({internalID: req.params.internalID})
-    .populate('reservations')
+    .populate({
+        path: 'reservations',
+        populate: {path: 'reservationSlot'},
+    })
+    .populate({
+        path: 'reservations',
+        populate: {path: 'user'}
+    })
     .then(restaurant => res.json(restaurant))
 })
 
@@ -42,18 +49,22 @@ router.post("/", (req, res, next) => { // todo - resID may be necessary?
                 {username: req.body.user}, 
                 {$push: {reservations: reservation}}
             )
+            .catch(console.error)
             Restaurant.findOneAndUpdate(
-                {internalID: req.body.restaurant},
+                {_id: req.body.restaurant},
                 {$push: {reservations: reservation}}
             )
-            return reservation
+            .catch(console.error)
+
         })
         .then(() => {
             ReservationSlot.findOneAndUpdate(
                 {_id: req.body.time}, // todo - slot scope
                 {$set: {isReserved: true}} // todo - verify schema properties?
             )
+            .catch(console.error)
         })
+        
         .then(() => {
             res.redirect('/reservations')
         })
