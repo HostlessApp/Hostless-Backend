@@ -10,6 +10,22 @@ router.get('/', (req, res, next) => {
         .then (user => res.json(user))
 })
 
+//Detail
+router.get('/:username', (req, res, next) => {
+    User.find({username: req.params.username})
+        .populate({
+            path: 'reservations',
+            populate: {path: 'reservationSlot'},
+        })
+        .populate({
+            path: 'reservations',
+            populate: {path: 'restaurant'}
+        })
+
+        .then (user => res.json(user))
+})
+
+
 //Create
 
 router.post('/', (req, res, next) => {
